@@ -1,7 +1,10 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import org.eclipse.swt.widgets.*;
+import javax.swing.*;
+import org.eclipse.jface.*;
+import org.eclipse.jface.dialogs.MessageDialog;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -63,12 +66,13 @@ public class MainWindow extends JFrame {
 		mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 		
-		mntmOpen = new JMenuItem("OPEN");
+		mntmOpen = new JMenuItem("open");
 		mntmOpen.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser chooser = new JFileChooser();
 				int v = chooser.showOpenDialog(null);
-				if(v == chooser.APPROVE_OPTION){
+				if(v == JFileChooser.APPROVE_OPTION){
 					File file = chooser.getSelectedFile();
 					playerComponent.getMediaPlayer().playMedia(file.getAbsolutePath());
 				}
@@ -76,8 +80,9 @@ public class MainWindow extends JFrame {
 		});
 		mnFile.add(mntmOpen);
 		
-		mntmExit = new JMenuItem("EXIT");
+		mntmExit = new JMenuItem("exit");
 		mntmExit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
@@ -88,24 +93,53 @@ public class MainWindow extends JFrame {
 		menuBar.add(mnPlay);
 		
 		mntmPause = new JMenuItem("pause");
+		mntmPause.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				getMediaPlayer().pause();
+			}
+		});
 		mnPlay.add(mntmPause);
 		
 		mntmSpeed = new JMenuItem("speed");
 		mnPlay.add(mntmSpeed);
 		
 		mntmVoice = new JMenuItem("voice+");
+		mntmVoice.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int v = getMediaPlayer().getVolume();
+				System.out.println(v+1);
+				getMediaPlayer().setVolume(v+1);
+			}
+		});
 		mnPlay.add(mntmVoice);
 		
 		mntmVoice_1 = new JMenuItem("voice-");
 		mnPlay.add(mntmVoice_1);
-		
+		mntmVoice_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int v = playerComponent.getMediaPlayer().getVolume();
+				System.out.println(v-1);
+				playerComponent.getMediaPlayer().setVolume(v-1);
+				
+			}
+		});
 		mnAbout = new JMenu("About");
 		menuBar.add(mnAbout);
 		
-		mntmSoftwareinfo = new JMenuItem("SoftwareInfo");
+		mntmSoftwareinfo = new JMenuItem("softwareInfo");
+		mntmSoftwareinfo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MessageDialog.openInformation
+				(null, "softwareinfo", "this software is programmed by LcritZ");
+			}
+		});
 		mnAbout.add(mntmSoftwareinfo);
 		
-		mntmHelp = new JMenuItem("Help");
+		mntmHelp = new JMenuItem("help");
 		mnAbout.add(mntmHelp);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -148,16 +182,19 @@ public class MainWindow extends JFrame {
 		progressBar.setStringPainted(true);
 		panel.add(progressBar, BorderLayout.NORTH);
 		btnExit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				getMediaPlayer().stop();
 			}
 		});
 		btnPause.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				getMediaPlayer().pause();
 			}
 		});
 		btnPlay.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				getMediaPlayer().play();
 			}
